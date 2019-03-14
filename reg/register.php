@@ -1,7 +1,6 @@
 <?php
 	
 	include '../Conn.php';		
-	insertErrinto("",0000);
 	$action = trim($_GET['action']);	//获取action 用来判断执行哪件事务
 	if($action == ""){
 		$json = array();
@@ -9,6 +8,7 @@
 		echo json_encode($json);//-1代表失败
 	}
 	else{
+			//你好全世界
 		switch($action){
 			case 0:
 				//获取数据信息	
@@ -61,7 +61,6 @@
 						$user_list =mysqli_fetch_array($list);
 						//判断是否为空
 						if($user_list['USER_PHONE_MD5'] == ""){
-							echo "su";
 							//用户第一次登录公司网络
 							mysqli_query($con,"insert into USER_VALUESPAGE values(
 								'',
@@ -159,6 +158,16 @@
 							mysqli_query($con,"update USER_VALUESPAGE set USER_EROR_NUMBER = 0 where USER_PHONE_MD5 = '$user'")or die(insertErrinto("重置错误次数失败",4434));
 							$json = array();
 							$json['status'] = '0';
+							//覆盖手机验证吗的随机数据
+							$vcode = date('h-i-s');
+							$vcodetoken = md5($vcode);//create VerificationCode md5
+							date_default_timezone_set('Asia/shanghai');
+							//创建用户登录的TOKEN
+							$vlogin = date('h-i-s');
+							$vlogintoken = md5($vlogin);
+							//Update token
+							mysqli_query($con,"update USER_VALUESPAGE set USER_TOKEN = '$vlogintoken',USER_LOGIN_VERIFICATION = '$vcodetoken'")or die(insertErrinto("更新用户的TOKEN出错",4433));
+							$json['token'] = $vlogintoken;
 							echo json_encode($json);
 						}
 						else{
