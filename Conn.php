@@ -1,10 +1,4 @@
 <?php
-	error_reporting(E_ALL);
-	//create table in mysql ; 
-	// this table is LeftProgram
-	function check(){
-		echo "车市成功";
-	}
 	function createLeftProgramUserTable($tableName){
 		mysqli_query();	
 	}
@@ -63,5 +57,3 @@
 		}
 			
 	}
-?>
-

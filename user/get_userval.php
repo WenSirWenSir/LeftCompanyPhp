@@ -1,5 +1,4 @@
 <?php
-
 	//该模块用来获取一个用户的所有资料信息
 	function get_userval($phone_md5,$token){
 		$con = getmysqlcon();//获取连接数据库的句柄
@@ -60,5 +59,28 @@
 			echo json_encode($json);
 		}
 	}
-?>
-
+	//该模块 用来获取用户的所有的地址 输出的格式为XML的格式
+	function get_alladdr($phone_md5){
+		$str_phone_md5 = substr($phone_md5,5);
+		$con = getmysqlcon();//获取句柄
+		mysqli_select_db($con,"LEFT_USERADDR")or die(insertErrinto("获取用户所有的地址中设置数据表发生错误",3318));
+		mysqli_query($con,"set names utf8")or die(insertErrinto("获取用户的所有的地址中设置编码方式错误",3317));
+		//开始查询用户的数据信息
+		$data = mysqli_query($con,"select * from $str_phone_md5")or die(insertErrinto("获取用户的所有地址中获取数据失败",3316));
+		echo "<?xml version='1.0' encoding='utf-8'?>";
+		echo "<body>";
+		while($user_list = mysqli_fetch_array($data)){
+			$xmlstr = 	"<addrs>
+						<USER_NAME>$user_list[0]</USER_NAME>
+						<USER_TEL>$user_list[1]</USER_TEL>
+						<USER_ADDR>$user_list[2]</USER_ADDR>
+						<PHYSICS_ADDR>sdfsdf</PHYSICS_ADDR>
+						<ADDR_IN>$user_list[4]</ADDR_IN>
+						<USER_SEX>$user_list[5]</USER_SEX>
+						<USER_YEAR>$user_list[6]</USER_YEAR>
+						<DEFAULT_ADDR>$user_list[7]</DEFAULT_ADDR>
+					</addrs>";
+			echo $xmlstr;
+		}
+		echo 	"</body>";
+	}

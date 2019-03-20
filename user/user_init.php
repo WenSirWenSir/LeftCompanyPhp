@@ -1,9 +1,9 @@
 <?php
 	//查询用户的信息  
-	include '../Conn.php';
-	include './get_userval.php';
-	include './update_userval.php';
-	include './insert_userval.php';
+	include_once('../Conn.php');
+	include_once('./get_userval.php');
+	include_once('./update_userval.php');
+	include_once('./insert_userval.php');
 	//检查一个用户的名称和token是否正确
 	$phone_md5 = trim($_GET['user_md5']);
 	$token = trim($_GET['user_token']);
@@ -21,7 +21,6 @@
 			$json = array();
 			$json['status'] = 2;	
 			echo json_encode($json);
-
 			break;
 		case 0:
 			//验证成功
@@ -42,8 +41,11 @@
 				case "get_userdefault_addr":
 					get_userdefault_addr($phone_md5,$token);
 					break;
-				case "insert_default_addr":
-					insert_default_addr("",1,15206036936,'福建省龙岩市上杭县上杭大道','23423432',$phone_md5);
+				case "insert_user_addr":
+					insert_user_addr('永远会陪你的','15206036936','福建省龙岩市上杭县上杭大道','','23423432',1,'33',0,$phone_md5);
+					break;
+				case "get_alladdr":
+					get_alladdr($phone_md5);
 					break;
 				default:
 					break;
@@ -76,4 +78,3 @@
 			
 		}
 	}
-?>

@@ -16,4 +16,3 @@
 	function update_user_defaultaddr($phone_md5,$token,$people,$sex,$addr,$coord,$phone){
 
 	}
-?>
