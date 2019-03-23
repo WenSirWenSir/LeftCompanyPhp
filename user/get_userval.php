@@ -61,6 +61,7 @@
 	}
 	//该模块 用来获取用户的所有的地址 输出的格式为XML的格式
 	function get_alladdr($phone_md5){
+		header("Content-type:text/xml;charset=utf-8");
 		$str_phone_md5 = substr($phone_md5,5);
 		$con = getmysqlcon();//获取句柄
 		mysqli_select_db($con,"LEFT_USERADDR")or die(insertErrinto("获取用户所有的地址中设置数据表发生错误",3318));

@@ -39,12 +39,24 @@
 					update_user_sex($phone_md5,$token,$sex);
 					break;
 				case "get_userdefault_addr":
+					//获取用户的默认地址
 					get_userdefault_addr($phone_md5,$token);
 					break;
 				case "insert_user_addr":
-					insert_user_addr('永远会陪你的','15206036936','福建省龙岩市上杭县上杭大道','','23423432',1,'33',0,$phone_md5);
+					//插入一个用户的收件地址
+					$name = trim($_GET['name']);
+					echo $name."--name";
+					$tel = trim($_GET['tel']);
+					$addr = trim($_GET['addr']);
+					$physics_addr = trim($_GET['physics_addr']);
+					$addr_in = trim($_GET['addr_in']);
+					$user_sex = trim($_GET['user_sex']);
+					$user_year = trim($_GET['user_year']);
+					$default = trim($_GET['default']);
+					insert_user_addr($name,$tel,$addr,$physics_addr,$addr_in,$user_sex,$user_year,$default,$phone_md5);
 					break;
 				case "get_alladdr":
+					//获取用户的所有的收件地址
 					get_alladdr($phone_md5);
 					break;
 				default:

@@ -3,12 +3,6 @@
 	//用来插入一个默认的数据到默认收件地址里
 	//用户名 性别 电话  地址 坐标 
 	function insert_user_addr($name,$tel,$addr,$physics_addr,$addr_in,$user_sex,$user_year,$default,$phone_md5){
-		header("Content-type:text/xml;charset=utf-8");
-		echo "<?xml version='1.0' encoding='utf-8'?>";
-		$xmlstr = "<andd>
-				<User_addr>hello world</User_addr>
-			</andd>";
-		echo $xmlstr;
 		$con  = getmysqlcon();	
 		//设置数据库
 		mysqli_query($con,"create database if not exists LEFT_USERADDR")or die(insertErrinto("创建默认数据库失败",3306));
@@ -17,7 +11,6 @@
 		//初始化数据库表
 		//mysql支持最大为29位的字符
 		//phone_md5  要减去头部的5位数
-	
 		$phone_md5 = substr($phone_md5,5);
 		mysqli_query($con,"create table if not exists $phone_md5 (
 					USER_NAME tinytext,
@@ -29,6 +22,6 @@
 					USER_YEAR tinytext,
 		DEFAULT_ADDR int(1))engine = innodb charset utf8")or die(insertErrinto("插入默认地址中,初始化数据库表失败",3302));
 		$insert = "insert into $phone_md5 values ('$name','$tel','$addr','$physics_addr','$addr_in',$user_sex,'$user_year',0)";
-		//测试输出xml格式的文件	
+		echo $insert;
 		mysqli_query($con,$insert)or die(insertErrinto("插入用户默认收件地址失败",3304));
 	}
