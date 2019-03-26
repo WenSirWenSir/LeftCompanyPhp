@@ -7,8 +7,22 @@
 	//检查一个用户的名称和token是否正确
 	$phone_md5 = trim($_GET['user_md5']);
 	$token = trim($_GET['user_token']);
-	$var = check_user($phone_md5,$token);
-	$action = trim($_GET['action']);//获取命令码
+	$var = -1;
+	$action = -1;
+	$xml_obj;
+	if($phone_md5 == ""){
+		$xml_data = file_get_contents("php://input");
+		$xml_obj = simplexml_load_string($xml_data,'SimpleXMLElement',LIBXML_NOCDATA);
+		$phone_md5 = $xml_obj->user_md5;
+		$token = $xml_obj->user_token;
+		$action = $xml_obj->action;
+		$var = check_user($phone_md5,$token);
+	}
+	else{
+		//GET的方式
+		$var = check_user($phone_md5,$token);
+		$action = trim($_GET['action']);//获取命令码
+	}
 	switch($var){
 		case 1:
 			//token 过期
@@ -43,16 +57,15 @@
 					get_userdefault_addr($phone_md5,$token);
 					break;
 				case "insert_user_addr":
-					//插入一个用户的收件地址
-					$name = trim($_GET['name']);
-					echo $name."--name";
-					$tel = trim($_GET['tel']);
-					$addr = trim($_GET['addr']);
-					$physics_addr = trim($_GET['physics_addr']);
-					$addr_in = trim($_GET['addr_in']);
-					$user_sex = trim($_GET['user_sex']);
-					$user_year = trim($_GET['user_year']);
-					$default = trim($_GET['default']);
+					//插入一个用户的收件地址 获取xml数据信息
+					$name = $xml_obj->addr_name;
+					$tel = trim($xml_obj->tel);
+					$addr = trim($xml_obj->addr);
+					$physics_addr = trim($xml_obj->physics_addr);
+					$addr_in = trim($xml_obj->addr_in);
+					$user_sex = trim($xml_obj->user_sex);
+					$user_year = trim($xml_obj->user_year);//年龄
+					$_default = trim($xml_obj->default);//是否默认
 					insert_user_addr($name,$tel,$addr,$physics_addr,$addr_in,$user_sex,$user_year,$default,$phone_md5);
 					break;
 				case "get_alladdr":
